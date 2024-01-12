@@ -9,9 +9,7 @@ import { initstate } from 'redux/contactsSlice';
 export const ContactList = () => {
   const dispatch = useDispatch();
   useEffect(() => {
-    if (!initstate.contacts.items.lenght) {
-      dispatch(fetchContacts());
-    }
+    dispatch(fetchContacts());
   }, [dispatch]);
   const contacts = useSelector(getContacts);
   console.log(contacts);

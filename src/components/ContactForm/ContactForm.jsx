@@ -1,14 +1,16 @@
 import React from 'react';
 import css from './ContactForm.module.css';
-import { useDispatch } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { addContacts } from 'redux/operations';
 import { fetchContacts } from 'redux/operations';
 import { useEffect } from 'react';
+import { getContacts } from 'redux/selectors';
 
 export const ContactForm = () => {
   // const [name, setName] = useState('');
   // const [number, setNumber] = useState('');
-
+  const contacts = useSelector(getContacts);
+  console.log(contacts);
   const dispatch = useDispatch();
   useEffect(() => {
     fetchContacts();
@@ -17,6 +19,23 @@ export const ContactForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
     const form = e.target;
+    const nameInContacts = contacts.items.some(
+      ({ name }) =>
+        name.toLowerCase() === form.elements.name.value.toLowerCase()
+    );
+    if (nameInContacts) {
+      alert(`${form.elements.name.value} is already in contacts`);
+      return;
+    }
+    const numberInContacts = contacts.items.some(
+      ({ phone }) =>
+        phone.toLowerCase() === form.elements.number.value.toLowerCase()
+    );
+    if (numberInContacts) {
+      alert(`${form.elements.name.value} is already in contacts`);
+      return;
+    }
+
     dispatch(
       addContacts({
         name: form.elements.name.value,
