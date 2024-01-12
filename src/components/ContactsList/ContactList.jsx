@@ -4,7 +4,6 @@ import { useDispatch, useSelector } from 'react-redux';
 import { getContacts, getFilter } from 'redux/selectors';
 import { useEffect } from 'react';
 import { fetchContacts, deleteContacts } from 'redux/operations';
-import { initstate } from 'redux/contactsSlice';
 
 export const ContactList = () => {
   const dispatch = useDispatch();
