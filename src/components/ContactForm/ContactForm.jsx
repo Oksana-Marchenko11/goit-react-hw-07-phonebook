@@ -1,17 +1,32 @@
 import React from 'react';
 import css from './ContactForm.module.css';
 import { useDispatch } from 'react-redux';
-import { addContact } from 'redux/contactsSlice';
+import { addContacts } from 'redux/operations';
+import { fetchContacts } from 'redux/operations';
+import { useEffect } from 'react';
 
 export const ContactForm = () => {
+  // const [name, setName] = useState('');
+  // const [number, setNumber] = useState('');
+
   const dispatch = useDispatch();
+  useEffect(() => {
+    fetchContacts();
+  }, [dispatch]);
 
   const handleSubmit = e => {
     e.preventDefault();
     const form = e.target;
-    dispatch(addContact(form.elements.name.value, form.elements.number.value));
-    // dispatch(addContact(form.elements.number.value));
-
+    dispatch(
+      addContacts({
+        name: form.elements.name.value,
+        phone: form.elements.number.value,
+      })
+    );
+    // setName(form.elements.name.value);
+    // setNumber(form.elements.number.value);
+    // console.log(form.elements.name.value);
+    // console.log(form.elements.number.value);
     form.reset();
   };
   return (
@@ -40,7 +55,7 @@ export const ContactForm = () => {
         title="Phone number must be digits and can contain spaces, dashes, parentheses and can start with +"
         required
       />
-      <button className={css.button} type="submit">
+      <button className={css.button} type="submit" onSubmit={handleSubmit}>
         Add contacts
       </button>
     </form>

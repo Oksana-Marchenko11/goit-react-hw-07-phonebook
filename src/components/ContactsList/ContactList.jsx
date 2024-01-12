@@ -1,19 +1,24 @@
 import React from 'react';
 import css from './ContactsList.module.css';
-import { deleteContact } from '../../redux/contactsSlice';
 import { useDispatch, useSelector } from 'react-redux';
 import { getContacts, getFilter } from 'redux/selectors';
+import { useEffect } from 'react';
+import { fetchContacts, deleteContacts } from 'redux/operations';
+import { initstate } from 'redux/contactsSlice';
 
 export const ContactList = () => {
+  const dispatch = useDispatch();
+  useEffect(() => {
+    if (!initstate.contacts.items.lenght) {
+      dispatch(fetchContacts());
+    }
+  }, [dispatch]);
   const contacts = useSelector(getContacts);
+  console.log(contacts);
   const filter = useSelector(getFilter);
-  const filteredContacts = contacts.filter(contact =>
+  const filteredContacts = contacts.items.filter(contact =>
     contact.name.toLowerCase().includes(filter.filter.toLowerCase())
   );
-  const dispatch = useDispatch();
-  const handleDelete = () => dispatch(deleteContact(contacts.id));
-
-  // const handleToggle = () => dispatch(toggleCompleted(task.id));
 
   return (
     <div>
@@ -26,15 +31,15 @@ export const ContactList = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredContacts.map(({ id, name, number }) => (
+          {filteredContacts.map(({ id, name, phone }) => (
             <tr key={id}>
               <td>{name}</td>
-              <td>{number}</td>
+              <td>{phone}</td>
               <td>
                 <button
                   className={css.delete_btn}
                   value={id}
-                  onClick={handleDelete}
+                  onClick={() => dispatch(deleteContacts(id))}
                 >
                   Delete
                 </button>
