@@ -4,10 +4,10 @@ import { useDispatch, useSelector } from 'react-redux';
 import { addContacts } from 'redux/operations';
 import { fetchContacts } from 'redux/operations';
 import { useEffect } from 'react';
-import { getContacts } from 'redux/selectors';
+import { selectContacts } from 'redux/selectors';
 
 export const ContactForm = () => {
-  const contacts = useSelector(getContacts);
+  const contacts = useSelector(selectContacts);
   console.log(contacts);
   const dispatch = useDispatch();
   useEffect(() => {

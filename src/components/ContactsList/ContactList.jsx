@@ -1,7 +1,7 @@
 import React from 'react';
 import css from './ContactsList.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { getContacts, getFilter } from 'redux/selectors';
+import { selectContacts, selectFilter } from 'redux/selectors';
 import { useEffect } from 'react';
 import { fetchContacts, deleteContacts } from 'redux/operations';
 
@@ -10,12 +10,15 @@ export const ContactList = () => {
   useEffect(() => {
     dispatch(fetchContacts());
   }, [dispatch]);
-  const contacts = useSelector(getContacts);
-  console.log(contacts);
-  const filter = useSelector(getFilter);
-  const filteredContacts = contacts.items.filter(contact =>
-    contact.name.toLowerCase().includes(filter.filter.toLowerCase())
+  const contacts = useSelector(selectContacts);
+  const items = contacts.items;
+  console.log(items);
+  const filter = useSelector(selectFilter);
+  console.log(filter);
+  const filteredContacts = items.filter(item =>
+    item.name.toLowerCase().includes(filter.toLowerCase())
   );
+  const isFilterUsed = filter.trim() !== '';
 
   return (
     <div>
@@ -28,21 +31,37 @@ export const ContactList = () => {
           </tr>
         </thead>
         <tbody>
-          {filteredContacts.map(({ id, name, phone }) => (
-            <tr key={id}>
-              <td>{name}</td>
-              <td>{phone}</td>
-              <td>
-                <button
-                  className={css.delete_btn}
-                  value={id}
-                  onClick={() => dispatch(deleteContacts(id))}
-                >
-                  Delete
-                </button>
-              </td>
-            </tr>
-          ))}
+          {isFilterUsed
+            ? filteredContacts.map(({ id, name, phone }) => (
+                <tr key={id}>
+                  <td>{name}</td>
+                  <td>{phone}</td>
+                  <td>
+                    <button
+                      className={css.delete_btn}
+                      value={id}
+                      onClick={() => dispatch(deleteContacts(id))}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            : contacts.items.map(({ id, name, phone }) => (
+                <tr key={id}>
+                  <td>{name}</td>
+                  <td>{phone}</td>
+                  <td>
+                    <button
+                      className={css.delete_btn}
+                      value={id}
+                      onClick={() => dispatch(deleteContacts(id))}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))}
         </tbody>
       </table>
     </div>
