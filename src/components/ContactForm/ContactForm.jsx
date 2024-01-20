@@ -8,7 +8,6 @@ import { selectContacts } from 'redux/selectors';
 
 export const ContactForm = () => {
   const contacts = useSelector(selectContacts);
-  console.log(contacts);
   const dispatch = useDispatch();
   useEffect(() => {
     fetchContacts();
