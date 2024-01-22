@@ -29,7 +29,6 @@ const contactsSlice = createSlice({
                 state.contacts.isLoading = false;
                 const index = state.contacts.items.findIndex(contact => contact.id === action.payload.id)
                 state.contacts.items.splice(index, 1);
-                console.log(state.contacts.items);
             })
             .addCase(deleteContacts.rejected, (state, action) => { state.contacts.isLoading = false; state.contacts.error = action.payload })
     }
