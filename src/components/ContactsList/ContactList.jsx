@@ -1,7 +1,11 @@
 import React from 'react';
 import css from './ContactsList.module.css';
 import { useDispatch, useSelector } from 'react-redux';
-import { selectContacts, selectFilter } from 'redux/selectors';
+import {
+  selectContacts,
+  selectFilter,
+  selectVisibleContacts,
+} from 'redux/selectors';
 import { useEffect } from 'react';
 import { fetchContacts, deleteContacts } from 'redux/operations';
 
@@ -11,11 +15,8 @@ export const ContactList = () => {
     dispatch(fetchContacts());
   }, [dispatch]);
   const contacts = useSelector(selectContacts);
-  const items = contacts.items;
   const filter = useSelector(selectFilter);
-  const filteredContacts = items.filter(item =>
-    item.name.toLowerCase().includes(filter.toLowerCase())
-  );
+  const filteredContact = useSelector(selectVisibleContacts);
   const isFilterUsed = filter.trim() !== '';
 
   return (
@@ -30,7 +31,7 @@ export const ContactList = () => {
         </thead>
         <tbody>
           {isFilterUsed
-            ? filteredContacts.map(({ id, name, phone }) => (
+            ? filteredContact.map(({ id, name, phone }) => (
                 <tr key={id}>
                   <td>{name}</td>
                   <td>{phone}</td>
@@ -45,7 +46,7 @@ export const ContactList = () => {
                   </td>
                 </tr>
               ))
-            : contacts.items.map(({ id, name, phone }) => (
+            : contacts.map(({ id, name, phone }) => (
                 <tr key={id}>
                   <td>{name}</td>
                   <td>{phone}</td>

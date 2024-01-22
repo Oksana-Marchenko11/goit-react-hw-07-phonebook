@@ -16,7 +16,7 @@ export const ContactForm = () => {
   const handleSubmit = e => {
     e.preventDefault();
     const form = e.target;
-    const nameInContacts = contacts.items.some(
+    const nameInContacts = contacts.some(
       ({ name }) =>
         name.toLowerCase() === form.elements.name.value.toLowerCase()
     );
@@ -24,7 +24,7 @@ export const ContactForm = () => {
       alert(`${form.elements.name.value} is already in contacts`);
       return;
     }
-    const numberInContacts = contacts.items.some(
+    const numberInContacts = contacts.some(
       ({ phone }) =>
         phone.toLowerCase() === form.elements.number.value.toLowerCase()
     );
